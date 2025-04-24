@@ -5,6 +5,7 @@ import { buildSimplifiedTextStyle } from "./utils/buildSimplifiedTextStyle";
 import { buildSimplifiedEffects } from "./utils/buildSimplifiedEffects";
 import { buildSimplifiedText } from "./utils/buildSimplifiedText";
 import { buildSimplifiedBorderRadius } from "./utils/buildSimplifiedBorderRaduis";
+import { buildSimplifiedComponent } from "./utils/buildSimplifiedComponent";
 
 export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
   const node: SimplifiedNode = {
@@ -13,16 +14,7 @@ export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
     type: rawNode.type,
   };
 
-  if (rawNode.type === "INSTANCE") {
-    const mainComponent = await rawNode.getMainComponentAsync();
-    if (mainComponent) {
-      console.log(mainComponent);
-      node.mainComponent = {
-        name: mainComponent.name,
-      };
-    }
-  }
-
+  node.component = await buildSimplifiedComponent(rawNode);
   node.fills = await buildSimplifiedFills(rawNode);
   node.effects = await buildSimplifiedEffects(rawNode);
   node.borderRadius = buildSimplifiedBorderRadius(rawNode);

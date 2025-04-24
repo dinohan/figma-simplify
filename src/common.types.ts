@@ -22,6 +22,12 @@ export interface SimplifiedVariable {
   description: string;
 }
 
+export interface SimplifiedComponent {
+  name: string;
+  properties: Record<string, unknown>;
+  overrides: string[];
+}
+
 export interface SimplifiedNode {
   id: string;
   name: string;
@@ -34,7 +40,5 @@ export interface SimplifiedNode {
   textStyle?: SimplifiedTextStyle;
   layout?: SimplifiedLayout;
   effects?: SimplifiedEffects;
-  mainComponent?: {
-    name: string;
-  };
+  component?: SimplifiedComponent;
 }
