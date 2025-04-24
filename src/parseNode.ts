@@ -1,5 +1,6 @@
 import { SimplifiedNode } from "./common.types";
 import { buildSimplifiedFills } from "./utils/buildSimplifiedFills";
+import { buildSimplifiedLayout } from "./utils/buildSimplifiedLayout";
 
 export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
   const node: SimplifiedNode = {
@@ -19,7 +20,9 @@ export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
 
   node.fills = await buildSimplifiedFills(rawNode);
 
-  // 자식 노드가 있는 경우 재귀적으로 처리
+  node.layout = await buildSimplifiedLayout(rawNode);
+
+  // recursive call for children
   if ("children" in rawNode && rawNode.children) {
     node.children = await Promise.all(
       rawNode.children.map((child) => parseNode(child as SceneNode))

@@ -1,3 +1,5 @@
+import { SimplifiedLayout } from "./utils/buildSimplifiedLayout";
+
 export interface SimplifiedFill {
   boundVariable?: SimplifiedVariable;
 }
@@ -14,6 +16,7 @@ export interface SimplifiedNode {
   type?: string;
   // boundVariables?: SimplifiedBoundVariables
   fills?: SimplifiedFill[];
+  layout?: SimplifiedLayout;
   mainComponent?: {
     name: string;
   };
