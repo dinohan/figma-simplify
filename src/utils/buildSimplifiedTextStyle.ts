@@ -6,9 +6,9 @@ function isTextNode(node: SceneNode): node is TextNode {
 }
 
 // Figma 노드에서 텍스트 스타일 정보 추출
-export async function buildSimplifiedTextStyle(
+export function buildSimplifiedTextStyle(
   node: SceneNode
-): Promise<SimplifiedTextStyle | undefined> {
+): SimplifiedTextStyle | undefined {
   // 텍스트 노드가 아니면 undefined 반환
   if (!isTextNode(node)) {
     return undefined;

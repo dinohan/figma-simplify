@@ -1,6 +1,4 @@
-export async function buildSimplifiedText(
-  node: SceneNode
-): Promise<string | undefined> {
+export function buildSimplifiedText(node: SceneNode): string | undefined {
   // TextNode 타입인지 확인
   if (node.type !== "TEXT") {
     return undefined;

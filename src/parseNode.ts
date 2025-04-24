@@ -16,6 +16,7 @@ export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
   if (rawNode.type === "INSTANCE") {
     const mainComponent = await rawNode.getMainComponentAsync();
     if (mainComponent) {
+      console.log(mainComponent);
       node.mainComponent = {
         name: mainComponent.name,
       };
@@ -23,11 +24,11 @@ export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
   }
 
   node.fills = await buildSimplifiedFills(rawNode);
-  node.layout = await buildSimplifiedLayout(rawNode);
-  node.textStyle = await buildSimplifiedTextStyle(rawNode);
   node.effects = await buildSimplifiedEffects(rawNode);
-  node.text = await buildSimplifiedText(rawNode);
-  node.borderRadius = await buildSimplifiedBorderRadius(rawNode);
+  node.borderRadius = buildSimplifiedBorderRadius(rawNode);
+  node.textStyle = buildSimplifiedTextStyle(rawNode);
+  node.text = buildSimplifiedText(rawNode);
+  node.layout = buildSimplifiedLayout(rawNode);
 
   // recursive call for children
   if ("children" in rawNode && rawNode.children) {

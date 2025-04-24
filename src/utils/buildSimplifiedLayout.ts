@@ -64,9 +64,9 @@ function generateCSSShorthand(padding: {
 }
 
 // Convert Figma's layout config into a more typical flex-like schema
-export async function buildSimplifiedLayout(
+export function buildSimplifiedLayout(
   node: SceneNode
-): Promise<SimplifiedLayout | undefined> {
+): SimplifiedLayout | undefined {
   if (!hasLayout(node)) {
     return { mode: "none" };
   }
