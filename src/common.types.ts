@@ -5,6 +5,14 @@ export interface SimplifiedTextStyle {
   fontSize?: number;
 }
 
+export interface SimplifiedEffects {
+  boxShadow?: string;
+  filter?: string;
+  backdropFilter?: string;
+  // 디자인 시스템 스타일 정보
+  style?: string;
+}
+
 export interface SimplifiedFill {
   boundVariable?: SimplifiedVariable;
 }
@@ -23,6 +31,7 @@ export interface SimplifiedNode {
   fills?: SimplifiedFill[];
   textStyle?: SimplifiedTextStyle;
   layout?: SimplifiedLayout;
+  effects?: SimplifiedEffects;
   mainComponent?: {
     name: string;
   };
