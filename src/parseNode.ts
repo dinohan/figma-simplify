@@ -3,6 +3,7 @@ import { buildSimplifiedFills } from "./utils/buildSimplifiedFills";
 import { buildSimplifiedLayout } from "./utils/buildSimplifiedLayout";
 import { buildSimplifiedTextStyle } from "./utils/buildSimplifiedTextStyle";
 import { buildSimplifiedEffects } from "./utils/buildSimplifiedEffects";
+import { buildSimplifiedText } from "./utils/buildSimplifiedText";
 
 export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
   const node: SimplifiedNode = {
@@ -24,6 +25,7 @@ export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
   node.layout = await buildSimplifiedLayout(rawNode);
   node.textStyle = await buildSimplifiedTextStyle(rawNode);
   node.effects = await buildSimplifiedEffects(rawNode);
+  node.text = await buildSimplifiedText(rawNode);
 
   // recursive call for children
   if ("children" in rawNode && rawNode.children) {
