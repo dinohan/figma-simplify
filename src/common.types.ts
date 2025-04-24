@@ -29,6 +29,7 @@ export interface SimplifiedNode {
   type?: string;
   // boundVariables?: SimplifiedBoundVariables
   fills?: SimplifiedFill[];
+  borderRadius?: string;
   text?: string;
   textStyle?: SimplifiedTextStyle;
   layout?: SimplifiedLayout;
