@@ -49,6 +49,7 @@ export async function buildSimplifiedEffects(
       const style = await figma.getStyleByIdAsync(node.effectStyleId as string);
       if (style) {
         result.style = style.name;
+        return result;
       }
     } catch (error) {
       console.error("효과 스타일을 불러오는 중 오류 발생:", error);
