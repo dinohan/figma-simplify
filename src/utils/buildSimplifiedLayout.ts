@@ -24,6 +24,10 @@ export interface SimplifiedLayout {
     horizontal?: "fixed" | "fill" | "hug";
     vertical?: "fixed" | "fill" | "hug";
   };
+  width?: number;
+  height?: number;
+  x?: number;
+  y?: number;
   position?: "absolute";
 }
 
@@ -40,8 +44,17 @@ function isInstanceNode(node: SceneNode): node is InstanceNode {
   return node.type === "INSTANCE";
 }
 
+function isTextNode(node: SceneNode): node is TextNode {
+  return node.type === "TEXT";
+}
+
 function hasLayout(node: SceneNode): boolean {
-  return isFrameNode(node) || isComponentNode(node) || isInstanceNode(node);
+  return (
+    isFrameNode(node) ||
+    isComponentNode(node) ||
+    isInstanceNode(node) ||
+    isTextNode(node)
+  );
 }
 
 // CSS 유틸리티
@@ -71,6 +84,17 @@ export function buildSimplifiedLayout(
     return { mode: "none" };
   }
 
+  // TextNode인 경우 간단한 레이아웃 정보만 반환
+  if (isTextNode(node)) {
+    return {
+      mode: "none",
+      width: node.width,
+      height: node.height,
+      x: node.x,
+      y: node.y,
+    };
+  }
+
   // FrameNode, ComponentNode, InstanceNode인 경우에만 처리
   if (isFrameNode(node) || isComponentNode(node) || isInstanceNode(node)) {
     const layout: SimplifiedLayout = {
@@ -80,6 +104,10 @@ export function buildSimplifiedLayout(
           : node.layoutMode === "VERTICAL"
           ? "column"
           : "none",
+      width: node.width,
+      height: node.height,
+      x: node.x,
+      y: node.y,
     };
 
     // 레이아웃 모드가 없는 경우 기본 객체 반환
