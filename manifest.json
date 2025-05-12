@@ -6,7 +6,7 @@
   "capabilities": ["codegen", "vscode"],
   "enableProposedApi": false,
   "documentAccess": "dynamic-page",
-  "editorType": ["dev"],
+  "editorType": ["figma", "dev"],
   "ui": "ui.html",
   "codegenLanguages": [
     {

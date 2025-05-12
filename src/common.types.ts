@@ -31,8 +31,8 @@ export interface SimplifiedComponent {
 export interface SimplifiedNode {
   id: string;
   name: string;
+  type: string;
   children?: SimplifiedNode[];
-  type?: string;
   // boundVariables?: SimplifiedBoundVariables
   fills?: SimplifiedFill[];
   borderRadius?: string;
