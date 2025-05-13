@@ -22,6 +22,38 @@ function getName(node: SimplifiedNode) {
   return name;
 }
 
+function transformSizing(
+  sizing: "hug" | "fill" | "fixed" | undefined,
+  raw: string
+) {
+  if (sizing === "hug") {
+    return undefined;
+  } else if (sizing === "fill") {
+    return "100%";
+  } else {
+    return raw;
+  }
+}
+
+function sanitizeValue(value: string | undefined) {
+  if (value === undefined || value === "0px") {
+    return undefined;
+  }
+  return value;
+}
+
+function getSizing(node: SimplifiedNode) {
+  let width: string | undefined = `${node.layout?.width}px`;
+  let height: string | undefined = `${node.layout?.height}px`;
+
+  if (node.layout?.sizing) {
+    width = transformSizing(node.layout.sizing.horizontal, width);
+    height = transformSizing(node.layout.sizing.vertical, height);
+  }
+
+  return { width, height };
+}
+
 function simplified2element(node: SimplifiedNode): Element {
   const name = getName(node);
 
@@ -53,8 +85,9 @@ function simplified2element(node: SimplifiedNode): Element {
     }
   }
 
+  const layout = node.layout;
+
   if (node.type === "FRAME") {
-    const layout = node.layout;
     if (layout) {
       if (layout.gap !== "0px") {
         attributes.spacing = layout.gap;
@@ -66,6 +99,39 @@ function simplified2element(node: SimplifiedNode): Element {
         attributes.align = layout.alignItems.replace("flex-", "");
       }
     }
+  }
+
+  if (node.fills && node.fills.length > 0) {
+    const fill = node.fills[0];
+    if (fill?.boundVariable) {
+      if (node.type === "TEXT") {
+        attributes.color = fill.boundVariable.name;
+      } else {
+        attributes.backgroundColor = fill.boundVariable.name;
+      }
+    }
+  }
+
+  if (node.effects) {
+    if (node.effects.style) {
+      const effectStyle = node.effects.style;
+      if (effectStyle.startsWith("ev/")) {
+        attributes.elevation = effectStyle.replace("ev/", "");
+      }
+    }
+  }
+
+  const styles = [
+    ["padding", sanitizeValue(layout?.padding)],
+    ["border-radius", sanitizeValue(node.borderRadius)],
+    ["width", getSizing(node).width],
+    ["height", getSizing(node).height],
+  ]
+    .filter(([_, value]) => !!value)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join("; ");
+  if (styles.length) {
+    attributes.style = styles;
   }
 
   if (Object.keys(attributes).length) {
@@ -83,7 +149,6 @@ function simplified2element(node: SimplifiedNode): Element {
 
 export function simplified2xml(node: SimplifiedNode) {
   const element = simplified2element(node);
-  console.log(element);
   return js2xml(
     { type: "elements", elements: [element] },
     {

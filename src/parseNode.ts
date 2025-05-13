@@ -25,7 +25,9 @@ export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
   // recursive call for children
   if ("children" in rawNode) {
     node.children = await Promise.all(
-      rawNode.children.map((child) => parseNode(child as SceneNode))
+      rawNode.children
+        .filter((child) => child.visible)
+        .map((child) => parseNode(child as SceneNode))
     );
   }
 

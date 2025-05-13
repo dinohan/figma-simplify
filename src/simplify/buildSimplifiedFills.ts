@@ -1,4 +1,4 @@
-import { SimplifiedFill, SimplifiedNode } from "../simplified.types";
+import { SimplifiedFill } from "../simplified.types";
 
 export async function buildSimplifiedFills(
   rawNode: SceneNode
@@ -34,6 +34,21 @@ export async function buildSimplifiedFills(
       }
     }
 
+    if (
+      [
+        "GRADIENT_LINEAR",
+        "GRADIENT_RADIAL",
+        "GRADIENT_ANGULAR",
+        "GRADIENT_DIAMOND",
+      ].includes(fill.type)
+    ) {
+      const graidentPaint = fill as GradientPaint;
+      simplifiedFill.gradientTransform = graidentPaint.gradientTransform;
+      simplifiedFill.gradientStops = graidentPaint.gradientStops.map(
+        (stop) => stop
+      );
+    }
+
     simplifiedFills.push(simplifiedFill);
   }
 
@@ -42,26 +57,4 @@ export async function buildSimplifiedFills(
   }
 
   return undefined;
-}
-
-export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
-  const node: SimplifiedNode = {
-    id: rawNode.id,
-    name: rawNode.name,
-    type: rawNode.type,
-  };
-
-  const fills = await buildSimplifiedFills(rawNode);
-  if (fills) {
-    node.fills = fills;
-  }
-
-  // 자식 노드가 있는 경우 재귀적으로 처리
-  if ("children" in rawNode && rawNode.children) {
-    node.children = await Promise.all(
-      rawNode.children.map((child) => parseNode(child as SceneNode))
-    );
-  }
-
-  return node;
 }

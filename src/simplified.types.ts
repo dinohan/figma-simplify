@@ -12,9 +12,15 @@ export interface SimplifiedEffects {
   // 디자인 시스템 스타일 정보
   style?: string;
 }
+export interface ColorValue {
+  hex: string;
+  opacity: number;
+}
 
 export interface SimplifiedFill {
   boundVariable?: SimplifiedVariable;
+  gradientTransform?: Transform;
+  gradientStops?: ColorStop[];
 }
 
 export interface SimplifiedVariable {
