@@ -24,15 +24,17 @@ function getName(node: SimplifiedNode) {
 
 function transformSizing(
   sizing: "hug" | "fill" | "fixed" | undefined,
-  raw: string
+  raw: number | undefined
 ) {
-  if (sizing === "hug") {
+  if (sizing === undefined || raw === undefined || sizing === "hug") {
     return undefined;
-  } else if (sizing === "fill") {
-    return "100%";
-  } else {
-    return raw;
   }
+
+  if (sizing === "fill") {
+    return "100%";
+  }
+
+  return `${raw}px`;
 }
 
 function sanitizeValue(value: string | undefined) {
@@ -43,15 +45,10 @@ function sanitizeValue(value: string | undefined) {
 }
 
 function getSizing(node: SimplifiedNode) {
-  let width: string | undefined = `${node.layout?.width}px`;
-  let height: string | undefined = `${node.layout?.height}px`;
-
-  if (node.layout?.sizing) {
-    width = transformSizing(node.layout.sizing.horizontal, width);
-    height = transformSizing(node.layout.sizing.vertical, height);
-  }
-
-  return { width, height };
+  return {
+    width: transformSizing(node.layout?.sizing?.horizontal, node.layout?.width),
+    height: transformSizing(node.layout?.sizing?.vertical, node.layout?.height),
+  };
 }
 
 function simplified2element(node: SimplifiedNode): Element {
