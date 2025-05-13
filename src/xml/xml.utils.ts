@@ -104,10 +104,11 @@ function simplified2element(node: SimplifiedNode): Element {
   if (node.fills && node.fills.length > 0) {
     const fill = node.fills[0];
     if (fill?.boundVariable) {
+      const variableName = fill.boundVariable.name.replaceAll("/", "-");
       if (node.type === "TEXT") {
-        attributes.color = fill.boundVariable.name;
+        attributes.color = variableName;
       } else {
-        attributes.backgroundColor = fill.boundVariable.name;
+        attributes.backgroundColor = variableName;
       }
     }
   }
