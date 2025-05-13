@@ -1,4 +1,4 @@
-import { SimplifiedTextStyle } from "../common.types";
+import { SimplifiedTextStyle } from "../simplified.types";
 
 // 텍스트 노드인지 확인하는 함수
 function isTextNode(node: SceneNode): node is TextNode {

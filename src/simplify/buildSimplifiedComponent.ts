@@ -1,4 +1,4 @@
-import { SimplifiedComponent } from "../common.types";
+import { SimplifiedComponent } from "../simplified.types";
 
 export async function buildSimplifiedComponent(
   node: SceneNode
@@ -20,10 +20,10 @@ export async function buildSimplifiedComponent(
   const name = componentSet?.name || mainComponent.name;
   const properties = Object.entries(node.componentProperties).reduce(
     (acc, [key, value]) => {
-      acc[key] = value.value;
+      acc[key] = `${value.value}`;
       return acc;
     },
-    {} as Record<string, unknown>
+    {} as Record<string, string>
   );
 
   const overrides = node.overrides[0]?.overriddenFields;

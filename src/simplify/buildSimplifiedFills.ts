@@ -1,4 +1,4 @@
-import { SimplifiedFill, SimplifiedNode } from "../common.types";
+import { SimplifiedFill, SimplifiedNode } from "../simplified.types";
 
 export async function buildSimplifiedFills(
   rawNode: SceneNode
@@ -50,15 +50,6 @@ export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
     name: rawNode.name,
     type: rawNode.type,
   };
-
-  if (rawNode.type === "INSTANCE") {
-    const mainComponent = await rawNode.getMainComponentAsync();
-    if (mainComponent) {
-      node.mainComponent = {
-        name: mainComponent.name,
-      };
-    }
-  }
 
   const fills = await buildSimplifiedFills(rawNode);
   if (fills) {

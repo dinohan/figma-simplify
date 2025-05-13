@@ -1,4 +1,4 @@
-import { SimplifiedEffects } from "../common.types";
+import { SimplifiedEffects } from "../simplified.types";
 
 // 그림자, 블러 등의 이펙트를 가진 노드인지 확인하는 함수
 function hasEffects<T extends SceneNode>(

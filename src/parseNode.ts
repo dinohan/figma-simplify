@@ -1,11 +1,11 @@
-import { SimplifiedNode } from "./common.types";
-import { buildSimplifiedFills } from "./utils/buildSimplifiedFills";
-import { buildSimplifiedLayout } from "./utils/buildSimplifiedLayout";
-import { buildSimplifiedTextStyle } from "./utils/buildSimplifiedTextStyle";
-import { buildSimplifiedEffects } from "./utils/buildSimplifiedEffects";
-import { buildSimplifiedText } from "./utils/buildSimplifiedText";
-import { buildSimplifiedBorderRadius } from "./utils/buildSimplifiedBorderRaduis";
-import { buildSimplifiedComponent } from "./utils/buildSimplifiedComponent";
+import { SimplifiedNode } from "./simplified.types";
+import { buildSimplifiedFills } from "./simplify/buildSimplifiedFills";
+import { buildSimplifiedLayout } from "./simplify/buildSimplifiedLayout";
+import { buildSimplifiedTextStyle } from "./simplify/buildSimplifiedTextStyle";
+import { buildSimplifiedEffects } from "./simplify/buildSimplifiedEffects";
+import { buildSimplifiedText } from "./simplify/buildSimplifiedText";
+import { buildSimplifiedBorderRadius } from "./simplify/buildSimplifiedBorderRaduis";
+import { buildSimplifiedComponent } from "./simplify/buildSimplifiedComponent";
 
 export async function parseNode(rawNode: SceneNode): Promise<SimplifiedNode> {
   const node: SimplifiedNode = {

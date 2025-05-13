@@ -1,4 +1,4 @@
-import { SimplifiedLayout } from "./utils/buildSimplifiedLayout";
+import { SimplifiedLayout } from "./simplify/buildSimplifiedLayout";
 
 export interface SimplifiedTextStyle {
   fontWeight?: string;
@@ -24,14 +24,16 @@ export interface SimplifiedVariable {
 
 export interface SimplifiedComponent {
   name: string;
-  properties: Record<string, unknown>;
+  properties: Record<string, string>;
   overrides: string[];
 }
+
+type NodeType = SceneNode["type"];
 
 export interface SimplifiedNode {
   id: string;
   name: string;
-  type: string;
+  type: NodeType;
   children?: SimplifiedNode[];
   // boundVariables?: SimplifiedBoundVariables
   fills?: SimplifiedFill[];

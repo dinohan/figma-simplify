@@ -7,6 +7,7 @@
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 import yaml from "js-yaml";
 import { parseNode } from "./src/parseNode";
+import { simplified2xml } from "./src/xml/xml.utils";
 
 // This provides the callback to generate the code.
 figma.codegen.on("generate", async (event) => {
@@ -23,9 +24,14 @@ figma.codegen.on("generate", async (event) => {
 
   return [
     {
+      language: "TYPESCRIPT",
+      code: simplified2xml(rootNode),
+      title: "JSX",
+    },
+    {
       language: "PLAINTEXT",
       code: code,
-      title: "Codegen Plugin",
+      title: "YAML",
     },
   ];
 });
