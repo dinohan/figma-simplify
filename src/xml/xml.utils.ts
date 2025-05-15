@@ -5,14 +5,6 @@ import { toKebabCase } from "../utils/string.utils";
 function getName(node: SimplifiedNode) {
   let name: string = node.type;
 
-  if (node.type === "FRAME") {
-    if (node.layout?.mode === "column") {
-      return "VStack";
-    } else if (node.layout?.mode === "row") {
-      return "HStack";
-    }
-  }
-
   if (node.component) {
     name = node.component.name;
   }
@@ -51,6 +43,8 @@ function getSizing(node: SimplifiedNode) {
   };
 }
 
+type Style = [string, string | undefined | number];
+
 function simplified2element(node: SimplifiedNode): Element {
   const name = getName(node);
 
@@ -82,22 +76,6 @@ function simplified2element(node: SimplifiedNode): Element {
     }
   }
 
-  const layout = node.layout;
-
-  if (node.type === "FRAME") {
-    if (layout) {
-      if (layout.gap !== "0px") {
-        attributes.spacing = layout.gap;
-      }
-      if (layout.justifyContent) {
-        attributes.justify = layout.justifyContent.replace("flex-", "");
-      }
-      if (layout.alignItems) {
-        attributes.align = layout.alignItems.replace("flex-", "");
-      }
-    }
-  }
-
   if (node.fills && node.fills.length > 0) {
     const fill = node.fills[0];
     if (fill?.boundVariable) {
@@ -119,17 +97,39 @@ function simplified2element(node: SimplifiedNode): Element {
     }
   }
 
-  const styles = [
+  const layout = node.layout;
+
+  let styles: Style[] = [];
+
+  if (node.type === "FRAME") {
+    if (layout) {
+      styles.push(["flex-direction", layout.mode]);
+
+      if (layout.gap !== "0px") {
+        styles.push(["gap", layout.gap]);
+      }
+      if (layout.justifyContent) {
+        styles.push(["justify-content", layout.justifyContent]);
+      }
+      if (layout.alignItems) {
+        styles.push(["align-items", layout.alignItems]);
+      }
+    }
+  }
+
+  styles = [
+    ...styles,
     ["padding", sanitizeValue(layout?.padding)],
-    ["border-radius", sanitizeValue(node.borderRadius)],
     ["width", getSizing(node).width],
     ["height", getSizing(node).height],
-  ]
-    .filter(([_, value]) => !!value)
-    .map(([key, value]) => `${key}: ${value}`)
-    .join("; ");
+    ["border-radius", sanitizeValue(node.borderRadius)],
+  ];
+
   if (styles.length) {
-    attributes.style = styles;
+    attributes.style = styles
+      .filter(([_, value]) => !!value)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join("; ");
   }
 
   if (Object.keys(attributes).length) {

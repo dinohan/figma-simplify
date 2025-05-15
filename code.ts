@@ -26,7 +26,7 @@ figma.codegen.on("generate", async (event) => {
     {
       language: "TYPESCRIPT",
       code: simplified2xml(rootNode),
-      title: "JSX",
+      title: "XML",
     },
     {
       language: "PLAINTEXT",
