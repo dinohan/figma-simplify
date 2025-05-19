@@ -55,6 +55,10 @@ function simplified2element(node: SimplifiedNode): Element {
 
   let attributes: Attributes = {};
 
+  if (node.type === "FRAME" || node.type === "TEXT") {
+    attributes.name = node.name;
+  }
+
   if (node.component) {
     const properties = Object.entries(node.component.properties).map(
       ([key, value]) => [toKebabCase(key), value]
